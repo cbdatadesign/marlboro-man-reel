@@ -1,0 +1,62 @@
+<script>
+
+var tileCountX = 6;
+var tileCountY = 8;
+
+var colorsLeft = [];
+var colorsRight = [];
+var colors = [];
+
+var interpolateShortest = true;
+
+function setup() {
+  createCanvas(window.innerWidth,window.innerHeight);
+  colorMode(HSB);
+  noStroke();
+  shakeColors();
+}
+
+function draw() {
+  var tileWidth = width / tileCountX;
+  var tileHeight = height / tileCountY;
+  var interCol;
+  colors = [];
+
+  for (var gridY = 0; gridY < tileCountY; gridY++) {
+    var col1 = colorsLeft[gridY];
+    var col2 = colorsRight[gridY];
+
+    for (var gridX = 0; gridX < tileCountX; gridX++) {
+      var amount = map(gridX, 0, tileCountX - 1, 0, 1);
+
+        colorMode(RGB);
+        interCol = lerpColor(col1, col2, amount);
+      fill(interCol);
+	  
+
+      var posX = tileWidth * gridX;
+      var posY = tileHeight * gridY;
+      rect(posX, posY, tileWidth, tileHeight);
+
+	  if(gridX % 3 === 0 && gridY % 2) {
+	  fill(60);
+	  }
+		else {
+		 fill(120);
+		}
+	 ellipse(posX +(tileWidth/2),posY + (tileHeight/2),35,35);  
+      colors.push(interCol);
+    }
+  }
+}
+
+function shakeColors() {
+  for (var i = 0; i < tileCountY; i++) {
+    colorsLeft[i] = color(random(40, 60), random(0, 100), 100);
+    colorsRight[i] = color(random(160, 190), 100, random(0, 100));
+
+  }
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.10.0/p5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.10.0/addons/p5.sound.min.js"></script>
