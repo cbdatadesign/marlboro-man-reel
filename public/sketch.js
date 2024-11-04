@@ -4,13 +4,15 @@ let marlboroWhite;
 let marlboroDark;
 
 function preload() {
-  img1 = loadImage("assets/graphics/neon-rodeo-effect-1.png");
-  img2 = loadImage("assets/graphics/neon-rodeo-effect-2.png");
-  img3 = loadImage("assets/graphics/neon-rodeo-effect-3.png");
-  img4 = loadImage("assets/graphics/neon-rodeo-effect-4.png");
-  img5 = loadImage("assets/graphics/neon-rodeo-effect-5.png");
+  img1 = loadImage("assets/graphics/flavor-v2.png");
+  img2 = loadImage("assets/graphics/bold-text.png");
+  img3 = loadImage("assets/graphics/country-text.png");
+  img4 = loadImage("assets/graphics/experience-text.png");
+  img5 = loadImage("assets/graphics/Taste-text.png");
+  img6 = loadImage("assets/graphics/neon-rodeo-effect-4.png");
+  img7 = loadImage("assets/graphics/neon-rodeo-effect-2.png");
 //  img7 = loadImage("assets/graphics/surgeon-generals-warning.png");
-  imagesArray = [img1,img2,img3,img4,img5];
+  imagesArray = [img1,img2,img3,img4,img5,img6,img7];
 	
   
   surgeonWarningBlack = loadImage("assets/graphics/surgeon-generals-warning.png");	
@@ -31,7 +33,7 @@ function setup() {
   button = createButton("Click Your Flavor");
   button.position(30,30,"absolute")
   button.mousePressed(swapBackground);
-  frameRate(10);
+  frameRate(5);
 }
 
 function windowResized() {
@@ -41,8 +43,13 @@ function windowResized() {
 
 let maxScale = 2.5;
 let scaleIterator = 0;
+let steppedScaleIterator = 0.8;
+let steppedScaleIteratorTwo = 1.2;
+let currentImageIndex = 0;
+let currentImageIndexTwo = 1;
 
 function draw() {
+//	randomMixer(imagesArray);
 	if (width < 1500) {
 		push();
 		imageMode(CENTER);
@@ -75,20 +82,20 @@ function draw() {
 		pop();
 	}
 	
-    for(let i = 0; i < imagesArray.length; i++) {
-      push();
-      let x = map(Math.random(),0,1,width*0.05,width*0.95);
-      let y = map(Math.random(),0,1,height*0.05,height*0.95);    
-      translate(x, y);
-      angleMode(DEGREES);
-      rotate(random(angles));
-      // rectMode(CENTER);
-      // rect(0,0,150,300);
-      imageMode(CENTER);
-      image(imagesArray[i],0,0,width,height);
-	  image(surgeonWarningBlack,800,256);
-      pop();
-    }
+//    for(let i = 0; i < imagesArray.length; i++) {
+//      push();
+//      let x = map(Math.random(),0,1,width*0.05,width*0.95);
+//      let y = map(Math.random(),0,1,height*0.05,height*0.95);    
+//      translate(x, y);
+//      angleMode(DEGREES);
+//      rotate(random(angles));
+//      // rectMode(CENTER);
+//      // rect(0,0,150,300);
+//      imageMode(CENTER);
+//      image(imagesArray[i],0,0,width,height);
+//	  image(surgeonWarningBlack,800,256);
+//      pop();
+//    }
 //      noLoop();
 
 	push();
@@ -98,10 +105,49 @@ function draw() {
 		scaleIterator = 0;
 	}
 	scale(scaleIterator);
+	if(darkMode) {
+		surgeonWarningBlack.filter(INVERT);
+	}
 	image(surgeonWarningBlack,0,0,800,256);
 	pop();
 	
 	scaleIterator += 0.02;
+	
+	if (imagesArray.length > 0) {
+		let myImg = imagesArray[currentImageIndex];
+		push();
+		translate(width/2,height/2);
+	    angleMode(DEGREES);
+        rotate(random(angles));
+		scale(steppedScaleIterator);
+		imageMode(CENTER);
+		image(myImg,0,0);
+//		image(imagesArray[i],0,0,width,height);
+		pop();
+		
+		myImg = imagesArray[currentImageIndexTwo]; // commandeer the myImg to use again
+		push();
+		translate(width/2,height/2);
+		scale(steppedScaleIteratorTwo);
+		imageMode(CENTER);
+		image(myImg,0,0);
+//		image(imagesArray[i],0,0,width,height);
+		pop();
+		}
+
+	
+	steppedScaleIterator += 0.06;
+	if (steppedScaleIterator >= 2) {
+		steppedScaleIterator = 0.8;
+		currentImageIndex = (currentImageIndex + 1) % imagesArray.length; // modulo equals: divide by and take the remainder
+
+	}
+	steppedScaleIteratorTwo += 0.06;
+	if (steppedScaleIteratorTwo >= 2) {
+		steppedScaleIteratorTwo = 0.8;
+		currentImageIndexTwo = (currentImageIndexTwo + 1) % imagesArray.length; // modulo equals: divide by and take the remainder
+
+	}
 }
 
 
